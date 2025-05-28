@@ -1,9 +1,7 @@
-from fastapi import APIRouter, HTTPException, status, Depends, UploadFile, File, Form
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import Optional, List
-import boto3
 import os
-from botocore.exceptions import BotoCoreError, NoCredentialsError, PartialCredentialsError, EndpointConnectionError
 from uuid import uuid4
 
 from models import ShareFood, Users
@@ -11,27 +9,7 @@ from database import get_db
 from routes.auth import get_current_user
 from pydantic import BaseModel
 
-
-# Konfigurasi AWS S3
-AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_REGION = os.getenv("AWS_REGION")
-BUCKET_NAME = os.getenv("BUCKET_NAME")
-
-if not all([AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_REGION, BUCKET_NAME]):
-    raise ValueError("Missing AWS configuration. Set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, and BUCKET_NAME.")
-
-try:
-    s3_client = boto3.client(
-        "s3",
-        aws_access_key_id=AWS_ACCESS_KEY,
-        aws_secret_access_key=AWS_SECRET_KEY,
-        region_name=AWS_REGION
-    )
-except (NoCredentialsError, PartialCredentialsError) as e:
-    raise ValueError(f"AWS credentials error: {str(e)}")
-
-# Router
+UPLOAD_DIR = "uploads/share_food"
 share_router = APIRouter()
 
 # Pydantic model
@@ -77,17 +55,17 @@ async def create_share_food_with_image(
     db: Session = Depends(get_db)
 ):
     try:
+        os.makedirs(UPLOAD_DIR, exist_ok=True)  # membuat folder jika belum ada
         file_ext = image.filename.split('.')[-1]
-        unique_filename = f"share_food/{uuid4()}.{file_ext}"
-        s3_client.upload_fileobj(
-            image.file,
-            BUCKET_NAME,
-            unique_filename,
-            ExtraArgs={"ContentType": image.content_type}
-        )
-        image_url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{unique_filename}"
-    except (EndpointConnectionError, BotoCoreError) as e:
-        raise HTTPException(status_code=500, detail=f"S3 error: {str(e)}")
+        unique_filename = f"{uuid4()}.{file_ext}"
+        file_path = os.path.join(UPLOAD_DIR, unique_filename)
+
+        with open(file_path, "wb") as buffer:
+            buffer.write(await image.read())
+
+        image_url = f"/{file_path}"  # atau bisa juga URL penuh kalau disajikan lewat static hosting
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"File upload error: {str(e)}")
 
     new_share_food = ShareFood(
         user_id=current_user.id,
