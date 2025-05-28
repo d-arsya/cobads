@@ -1,0 +1,30 @@
+# Ignore environment variables file
+.env
+
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment directory
+.venv/
+venv/
+
+# IDE and editor configurations
+.vscode/
+.idea/
+
+# Pipenv files
+Pipfile.lock
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+
+# Cache directories
+.cache/
+
+# Pytest cache
+.cache/
