@@ -23,7 +23,7 @@ class AnnouncementResponse(AnnouncementBase):
 announcements_router = APIRouter()
 
 # Create an announcement (POST)
-@announcements_router.post("/", response_model=AnnouncementResponse, status_code=201)
+@announcements_router.post("", response_model=AnnouncementResponse, status_code=201)
 def create_announcement(
     announcement: AnnouncementBase, db: Session = Depends(get_db)
 ):
@@ -38,7 +38,7 @@ def create_announcement(
     return db_announcement
 
 # Get all announcements (GET)
-@announcements_router.get("/", response_model=list[AnnouncementResponse], status_code=200)
+@announcements_router.get("", response_model=list[AnnouncementResponse], status_code=200)
 def get_announcements(db: Session = Depends(get_db)):
     announcements = db.query(Announcement).all()
     return announcements
