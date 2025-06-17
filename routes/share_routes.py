@@ -16,6 +16,7 @@ share_router = APIRouter()
 class ShareFoodResponseModel(BaseModel):
     id: int
     waktu: str
+    tanggal: str
     koordinat: str
     nama_pembagi: str
     nomor_pembagi: str
@@ -38,6 +39,7 @@ class ShareFoodResponseModel(BaseModel):
 @share_router.post("/share", status_code=201)
 async def create_share_food_with_image(
     waktu: str = Form(...),
+    tanggal: str = Form(...),
     koordinat: str = Form(...),
     nama_pembagi: str = Form(...),
     nomor_pembagi: str = Form(...),
@@ -71,6 +73,7 @@ async def create_share_food_with_image(
         user_id=current_user.id,
         user_name=current_user.name,
         waktu=waktu,
+        tanggal=waktu,
         koordinat=koordinat,
         nama_pembagi=nama_pembagi,
         nomor_pembagi=nomor_pembagi,
@@ -154,6 +157,7 @@ def accept_share_food(
             "wadah_makanan": share_food.wadah_makanan,
             "makanan_diambil": share_food.makanan_diambil,
             "waktu": share_food.waktu,
+            "tanggal": share_food.tanggal,
             "jumlah_makanan": share_food.jumlah_makanan,
             "nama_pembagi": share_food.nama_pembagi,
             "nomor_pembagi": share_food.nomor_pembagi,

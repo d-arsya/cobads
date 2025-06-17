@@ -11,6 +11,7 @@ from pydantic import BaseModel
 # Pydantic model for request validation
 class NeedFoodCreateModel(BaseModel):
     waktu: str
+    tanggal: str
     koordinat: str
     nama_pencari: str
     nomor_pencari: str
@@ -25,6 +26,7 @@ class NeedFoodResponseModel(BaseModel):
     user_id: int
     user_name: str
     waktu: str
+    tanggal: str
     koordinat: str
     nama_pencari: str
     nomor_pencari: str
@@ -56,6 +58,7 @@ def create_need_food(
         user_id=user_id,
         user_name=user_name,
         waktu=need_food_data.waktu,
+        tanggal=need_food_data.tanggal,
         koordinat=need_food_data.koordinat,
         nama_pencari=need_food_data.nama_pencari,
         nomor_pencari=need_food_data.nomor_pencari,

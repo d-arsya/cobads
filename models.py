@@ -22,6 +22,7 @@ class NeedFood(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     user_name = Column(String, ForeignKey('users.name'))  
+    tanggal = Column(String)
     waktu = Column(String)
     koordinat = Column(String)
     nama_pencari = Column(String)
@@ -48,6 +49,7 @@ class ShareFood(Base):
     user = relationship("Users", back_populates="share_foods", foreign_keys=[user_id])  # Specify which foreign key to use
     
     # Other columns
+    tanggal = Column(String)
     waktu = Column(String)
     koordinat = Column(String)
     nama_pembagi = Column(String)
