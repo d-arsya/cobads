@@ -73,7 +73,7 @@ async def create_share_food_with_image(
         user_id=current_user.id,
         user_name=current_user.name,
         waktu=waktu,
-        tanggal=waktu,
+        tanggal=tanggal,
         koordinat=koordinat,
         nama_pembagi=nama_pembagi,
         nomor_pembagi=nomor_pembagi,
