@@ -60,6 +60,7 @@ class ShareFood(Base):
     jumlah_makanan = Column(Integer)
     keterangan = Column(String)
     waktu_kadaluwarsa = Column(String)
+    tanggal_kadaluwarsa = Column(String)
     tipe_makanan = Column(String)
     wadah_makanan = Column(String)
     makanan_diambil = Column(String)

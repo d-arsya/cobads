@@ -27,6 +27,7 @@ class ShareFoodResponseModel(BaseModel):
     keterangan: str
     image_url: Optional[str] = None
     waktu_kadaluwarsa: str
+    tanggal_kadaluwarsa: str
     tipe_makanan: Optional[str] = None
     wadah_makanan: Optional[str] = None
     makanan_diambil: Optional[str] = None
@@ -49,6 +50,7 @@ async def create_share_food_with_image(
     jumlah_makanan: int = Form(...),
     keterangan: str = Form(...),
     waktu_kadaluwarsa: str = Form(...),
+    tanggal_kadaluwarsa: str = Form(...),
     tipe_makanan: Optional[str] = Form(None),
     wadah_makanan: Optional[str] = Form(None),
     makanan_diambil: Optional[str] = Form(None),
@@ -83,6 +85,7 @@ async def create_share_food_with_image(
         jumlah_makanan=jumlah_makanan,
         keterangan=keterangan,
         waktu_kadaluwarsa=waktu_kadaluwarsa,
+        tanggal_kadaluwarsa=tanggal_kadaluwarsa,
         tipe_makanan=tipe_makanan,
         wadah_makanan=wadah_makanan,
         makanan_diambil=makanan_diambil,
@@ -163,6 +166,7 @@ def accept_share_food(
             "nomor_pembagi": share_food.nomor_pembagi,
             "keterangan": share_food.keterangan,
             "waktu_kadaluwarsa": share_food.waktu_kadaluwarsa,
+            "tanggal_kadaluwarsa": share_food.tanggal_kadaluwarsa,
             "koordinat": share_food.koordinat,  # Pastikan ini tersimpan dalam format lat,lng
             "status": share_food.status,
             "image_url": share_food.image_url,  # Jika ada gambar makanan
